@@ -53,7 +53,7 @@ function Out-ConsoleLog {
 
     $console_logs = @{
         Info = "Line: $($MyInvocation.ScriptLineNumber) : $TimeStamp : $message"
-        Success = "Line: $($MyInvocation.ScriptLineNumber) : $TimeStamp : SUCCESS: Teams has been uninstalled"
+        Success = "Line: $($MyInvocation.ScriptLineNumber) : $TimeStamp : SUCCESS: Teams has been installed"
         Failure =  "FAILURE: Script Halted at Line: $($MyInvocation.ScriptLineNumber)"
         RecommendedAction = $Recommendations
     }
@@ -113,7 +113,7 @@ If (!(Get-TeamsInstallStatus).Name){
 
             Out-ConsoleLog -Type Info -Message "Bootstrapper found, starting install"
          
-            Start-Process $LTSvc\teamsbootstrapper.exe -ArgumentList "-x" -WindowStyle Hidden -Wait -ErrorAction Stop
+            Start-Process $LTSvc\teamsbootstrapper.exe -ArgumentList "-p" -WindowStyle Hidden -Wait -ErrorAction Stop
 
         }elseif(!(Get-BootStrapperCheck)){
 

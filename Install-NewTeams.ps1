@@ -9,7 +9,7 @@ This script installs New Teams to the system using the Teams Bootstrapper
 Script checks if New Teams is installed and if not,  it will download the Teams Bootstrapper. Script will use the bootrapper to install New Teams
 
 Author: Jon Witherspoon
-Last Modified: 5/5/25
+Last Modified: 5/14/25
 
 
 .PARAMETER Name
@@ -61,7 +61,7 @@ function Out-ConsoleLog {
     switch ($Type) {
         ([Logs]::Info) {Write-Host $console_logs.Info ; break}
         ([Logs]::Success) {Write-Host $console_logs.Success ; break }
-        ([Logs]::Failure) {Write-Error "$($console_logs.Failure) $Recommendations" -ErrorAction Stop ; break }
+        ([Logs]::Failure) {Write-Error "$($console_logs.Failure) $($console_logs.RecommendedAction)" -ErrorAction Stop ; break }
     }
     
 }
@@ -130,11 +130,14 @@ If (!(Get-TeamsInstallStatus).Name){
     }
     catch {
 
-        Out-ConsoleLog -Type Failure -Message -Recommendations "Manual intervention required: Teams was NOT installed"
+        Out-ConsoleLog -Type Failure -Recommendations "Manual intervention required: Teams was NOT installed"
     }
+
     Out-ConsoleLog -Type Success
     
-}else{
+}elseif (Test-Path -Path (Get-TeamsInstallStatus).InstallLocation) {
 
-    Out-ConsoleLog -Type Failure -Message -Recommendations "Teams is already installed on this device"
+    Out-ConsoleLog -Type Info -Message "If Teams is uninstalled using the graphical uninstall, it will leave the directories but not show up if searched See next log if this directory exists."
+    Out-ConsoleLog -Type Failure -Recommendations "Microsoft Teams located at: $((Get-TeamsInstallStatus).InstallLocation) EXISTS. Manually remove before proceeding"
+
 }

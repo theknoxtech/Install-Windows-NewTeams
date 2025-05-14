@@ -1,2 +1,2 @@
-# Install-NewTeams
+# Install-Windows-NewTeams
 
